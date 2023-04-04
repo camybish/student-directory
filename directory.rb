@@ -22,9 +22,10 @@ def print_header
 end
 
 def print(students)
-  students.each do |students|
-    puts "#{students[:name]} (#{students[:cohort]} cohort)"
+  students.each.with_index(1) do |students, number|
+    puts "#{number}: #{students[:name]} (#{students[:cohort]} cohort)"
   end
+  puts students.select { |students| students[:name].length < 8 }
 end
 
 def print_footer(students)
