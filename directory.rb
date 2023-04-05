@@ -1,6 +1,7 @@
 @students = []
 
 def print_menu
+  puts "\n\n"
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
@@ -87,10 +88,10 @@ end
 
 def save_students
   # open the file for writing
-  file = File.open("students.csv", "w")
+  file = File.open("./.gitignore/students.csv", "w")
   # iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:likes]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
