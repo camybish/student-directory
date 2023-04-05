@@ -24,9 +24,9 @@ def input_students
         puts "Now we have #{students.count} #{stud}"
         name = gets.chomp
         puts "And their hobby?"
-        hobby = gets.chomp
+        hobby = gets.strip
         puts "Cohort? (return for november)"
-        cohort = gets.chomp
+        cohort = gets.strip
     end
     
     students
