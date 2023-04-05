@@ -6,6 +6,7 @@ def input_students
     
     name = gets.chomp
     
+    
     puts "Does this student have a favourite hobby"
     hobby = gets.strip
     
@@ -54,3 +55,4 @@ students = input_students
 print_header
 print(students)
 print_footer(students)
+
