@@ -35,22 +35,22 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
 def input_students
     puts "Please enter the names of the students"
     puts "To finish, hit return twice"
-    name = gets.chomp
+    name = STDIN.gets.chomp
     
     
     puts "Does this student have a favourite hobby"
-    hobby = gets.strip
+    hobby = STDIN.gets.strip
     
     puts "Are they in the november cohort or a different one? 
     (return if november)"
-    cohort = gets.strip.to_sym
+    cohort = STDIN.gets.strip.to_sym
     
     
     while !name.empty? do 
@@ -61,11 +61,11 @@ def input_students
         end
         stud = @students.count > 1 ? "students" : "student"
         puts "Now we have #{@students.count} #{stud}"
-        name = gets.chomp
+        name = STDIN.gets.chomp
         puts "And their hobby?"
-        hobby = gets.strip
+        hobby = STDIN.gets.strip
         puts "Cohort? (return for november)"
-        cohort = gets.strip
+        cohort = STDIN.gets.strip
     end
     
     @students
@@ -101,12 +101,26 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("./.gitignore/students.csv" , "r")
+def load_students(filename = "./.gitignore/students.csv")
+  file = File.open( filename , "r")
   file.readlines.each do |line|
   name, cohort, likes = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym, likes: likes}
   end 
   file.close
 end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exists?(filename)
+    load_students(filename)
+      puts "Loaded #{students.count} from #{filename}"
+  else 
+    puts "Sorry, #{filename} doesn't exist"
+    exit
+  end
+end
+
+try_load_students
 interactive_menu
