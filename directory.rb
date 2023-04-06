@@ -90,24 +90,32 @@ def print_footer
 end
 
 def save_students
-  # open the file for writing
-  file = File.open("./.gitignore/students.csv", "w")
-  # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:likes]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
-  end
+  if @students.any?
+    file = File.open("./.gitignore/students.csv", "w")
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort], student[:likes]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   file.close
+  puts "Saved successfully"
+  else
+    puts "No data to save"
+  end
 end
 
 def load_students(filename = "./.gitignore/students.csv")
-  file = File.open( filename , "r")
-  file.readlines.each do |line|
-  name, cohort, likes = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym, likes: likes}
-  end 
-  file.close
+  if File.exist?(filename)
+    file = File.open( filename , "r")
+    file.readlines.each do |line|
+      name, cohort, likes = line.chomp.split(",")
+      @students << {name: name, cohort: cohort.to_sym, likes: likes}
+    end 
+    file.close
+    puts "Loaded Successfully"
+  else
+    puts "Could not find Save file"
+  end
 end
 
 def try_load_students
@@ -123,4 +131,5 @@ def try_load_students
 end
 
 try_load_students
+
 interactive_menu
