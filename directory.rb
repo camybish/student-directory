@@ -1,11 +1,13 @@
 @students = []
+require 'csv'
 
 def print_menu
-  puts "\n\n"
+  puts "(Loaded from #{__FILE__})"
+  puts "\n\n~~Villains Academy: Student Directory~~"
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv" 
+  puts "3. Save the list"
+  puts "4. Load the list" 
   puts "9. Exit"
 end
 
@@ -91,27 +93,28 @@ end
 
 def save_students
   if @students.any?
-    file = File.open("./.gitignore/students.csv", "w")
-    @students.each do |student|
-      student_data = [student[:name], student[:cohort], student[:likes]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
+    puts "what would you like to call this file?"
+    input = STDIN.gets.chomp
+    CSV.open("./.gitignore/" + input + ".csv", "w") do |csv|
+      @students.each do |student|
+        csv << [student[:name], student[:cohort], student[:likes]]
+      end
     end
-  file.close
-  puts "Saved successfully"
+  puts "#{input} was saved successfully"
   else
     puts "No data to save"
   end
 end
 
-def load_students(filename = "./.gitignore/students.csv")
+def load_students
+  puts "What file do you want to load?"
+  input = STDIN.gets.chomp
+  filename = "./.gitignore/" + input + ".csv"
   if File.exist?(filename)
-    file = File.open( filename , "r")
-    file.readlines.each do |line|
-      name, cohort, likes = line.chomp.split(",")
-      @students << {name: name, cohort: cohort.to_sym, likes: likes}
-    end 
-    file.close
+    CSV.foreach(filename) do |row|
+        name, cohort, likes = row
+        @students << {name: name, cohort: cohort.to_sym, likes: likes}
+      end
     puts "Loaded Successfully"
   else
     puts "Could not find Save file"
